@@ -1,0 +1,48 @@
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+	local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+	if vim.v.shell_error ~= 0 then
+		vim.api.nvim_echo({
+			{ "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+			{ out, "WarningMsg" },
+			{ "\nPress any key to exit..." },
+		}, true, {})
+		vim.fn.getchar()
+		os.exit(1)
+	end
+end
+vim.opt.rtp:prepend(lazypath)
+
+-- Make sure to setup `mapleader` and `maplocalleader` before
+-- loading lazy.nvim so that mappings are correct.
+-- This is also a good place to setup other settings (vim.opt)
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+
+vim.opt.sessionoptions:append("globals")
+vim.api.nvim_create_user_command("Mksession", function(attr)
+	vim.api.nvim_exec_autocmds("User", { pattern = "SessionSavePre" })
+
+	-- Neovim 0.8+
+	vim.cmd.mksession({ bang = attr.bang, args = attr.fargs })
+
+	-- Neovim 0.7
+	vim.api.nvim_command("mksession " .. (attr.bang and "!" or "") .. attr.args)
+end, { bang = true, complete = "file", desc = "Save barbar with :mksession", nargs = "?" })
+-- Setup lazy.nvim
+require("lazy").setup({
+	spec = {
+		-- import your plugins
+		{ import = "plugins" },
+	},
+	-- Configure any other settings here. See the documentation for more details.
+	-- colorscheme that will be used when installing plugins.
+	install = { colorscheme = { "catppuccin" } },
+	change_detection = {
+		notify = false,
+	},
+	-- automatically check for plugin updates
+	checker = { enabled = true },
+})
