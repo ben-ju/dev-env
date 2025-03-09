@@ -118,6 +118,7 @@ alias start-ngrok="ngrok http --url=lark-infinite-evenly.ngrok-free.app 8000"
 alias burp-chromium="nohup chromium --proxy-server=127.0.0.1:9191 > /dev/null 2>&1 &"
 # alias prx='mitmweb --listen-port 9000 --web-port 9001 & sleep 2 && chromium --proxy-server="http://127.0.0.1:9000"'
 alias dev-env="$HOME/dev-env/dev-env"
+alias tmux-sessionizer="$HOME/.local/scripts/tmux-sessionizer"
 
 
 # Generated for envman. Do not edit.
