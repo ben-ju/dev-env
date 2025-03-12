@@ -300,6 +300,7 @@ return {
 			group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
 			-- Create a function that lets us more easily define mappings specific LSP related items.
 			-- It sets the mode, buffer and description for us each time.
+
 			callback = function(event)
 				local map = function(keys, func, desc)
 					vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
@@ -390,6 +391,10 @@ return {
 				"lua_ls",
 				"rust_analyzer",
 				"gopls",
+				"volar",
+				"intelephense",
+				"tsserver",
+				"ts_ls",
 			},
 			handlers = {
 				function(server_name) -- default handler (optional)
@@ -413,6 +418,21 @@ return {
 					vim.g.zig_fmt_parse_errors = 0
 					vim.g.zig_fmt_autosave = 0
 				end,
+				-- ["volar"] = function()
+				-- 	require("lspconfig").volar.setup({
+				-- 		capabilities = capabilities,
+				-- 		filetypes = { "typescript", "javascript", "vue" },
+				-- 		settings = {
+				-- 			volar = {
+				-- 				autoCompleteParent = true,
+				-- 				codeLens = {
+				-- 					references = true,
+				-- 					pugTools = true,
+				-- 				},
+				-- 			},
+				-- 		},
+				-- 	})
+				-- end,
 				["lua_ls"] = function()
 					local lspconfig = require("lspconfig")
 					lspconfig.lua_ls.setup({
@@ -445,16 +465,15 @@ return {
 				["<C-Space>"] = cmp.mapping.complete(),
 			}),
 			sources = cmp.config.sources({
-				{ name = "copilot", group_index = 2 },
-				{ name = "nvim_lsp" },
-				{ name = "luasnip" }, -- For luasnip users.
-			}, {
-				{ name = "buffer" },
+				{ name = "nvim_lsp", priority = 1000 },
+				{ name = "luasnip", priority = 750 }, -- For luasnip users.
+				{ name = "buffer", priority = 500 },
+				{ name = "path", priority = 250 },
 			}),
 		})
 
 		vim.diagnostic.config({
-			-- update_in_insert = true,
+			update_in_insert = true,
 			float = {
 				focusable = false,
 				style = "minimal",

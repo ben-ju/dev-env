@@ -31,6 +31,9 @@ return {
 			-- list of servers for mason to install
 			ensure_installed = {
 				"ts_ls",
+				"volar",
+				"eslint",
+				"tsserver",
 				"intelephense",
 				"html",
 				"cssls",
@@ -58,6 +61,8 @@ return {
 				"sql-formatter",
 				"php-cs-fixer",
 				"staticcheck",
+				"vue-language-server", -- Volar
+				"eslint_d",
 				-- Go tools
 				"gofumpt", -- Strict Go formatter
 				"goimports", -- Manages imports
